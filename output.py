@@ -9,29 +9,224 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtGui import QImage
+import cv2, imutils
+import time
+import numpy as np
+#faceCascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+faceCascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+import numpy as np
+import cv2
+import pyshine as ps
 
 
 class Ui_MainWindow(object):
-    def setupUi(self, MainWindow):
-        MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(800, 600)
-        self.centralwidget = QtWidgets.QWidget(MainWindow)
-        self.centralwidget.setObjectName("centralwidget")
-        MainWindow.setCentralWidget(self.centralwidget)
-        self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 26))
-        self.menubar.setObjectName("menubar")
-        MainWindow.setMenuBar(self.menubar)
-        self.statusbar = QtWidgets.QStatusBar(MainWindow)
-        self.statusbar.setObjectName("statusbar")
-        MainWindow.setStatusBar(self.statusbar)
+        def setupUi(self, MainWindow):
+                MainWindow.setObjectName("MainWindow")
+                MainWindow.resize(818, 712)
+                MainWindow.setLayoutDirection(QtCore.Qt.LeftToRight)
+                MainWindow.setStyleSheet("background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.5, stop:0 rgba(0, 0, 0, 0), stop:0.52 rgba(0, 0, 0, 0), stop:0.565 rgba(82, 121, 76, 33), stop:0.65 rgba(159, 235, 148, 64), stop:0.721925 rgba(255, 238, 150, 129), stop:0.77 rgba(255, 128, 128, 204), stop:0.89 rgba(191, 128, 255, 64), stop:1 rgba(0, 0, 0, 0));")
+                self.centralwidget = QtWidgets.QWidget(MainWindow)
+                self.centralwidget.setObjectName("centralwidget")
+                self.label = QtWidgets.QLabel(self.centralwidget)
+                self.label.setGeometry(QtCore.QRect(270, 10, 291, 81))
+                sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Preferred)
+                sizePolicy.setHorizontalStretch(0)
+                sizePolicy.setVerticalStretch(0)
+                sizePolicy.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
+                self.label.setSizePolicy(sizePolicy)
+                self.label.setMinimumSize(QtCore.QSize(91, 0))
+                self.label.setBaseSize(QtCore.QSize(500, 500))
+                font = QtGui.QFont()
+                font.setFamily("Arial")
+                font.setPointSize(24)
+                font.setBold(True)
+                font.setWeight(75)
+                self.label.setFont(font)
+                self.label.setMouseTracking(True)
+                self.label.setStyleSheet("background-color: rgb(124, 238, 255);\n"
+                "border-radius : 20px;")
+                self.label.setAlignment(QtCore.Qt.AlignCenter)
+                self.label.setWordWrap(True)
+                self.label.setIndent(0)
+                self.label.setObjectName("label")
+                self.label_2 = QtWidgets.QLabel(self.centralwidget)
+                self.label_2.setGeometry(QtCore.QRect(210, 140, 421, 351))
+                self.label_2.setStyleSheet("background-color: rgb(137, 169, 255);\n"
+                "border-radius: 20px;")
+                self.label_2.setText("")
+                self.label_2.setObjectName("label_2")
+                self.splitter = QtWidgets.QSplitter(self.centralwidget)
+                self.splitter.setGeometry(QtCore.QRect(230, 540, 381, 40))
+                self.splitter.setOrientation(QtCore.Qt.Horizontal)
+                self.splitter.setObjectName("splitter")
+                self.pushButton = QtWidgets.QPushButton(self.splitter)
+                font = QtGui.QFont()
+                font.setPointSize(20)
+                self.pushButton.setFont(font)
+                self.pushButton.setStyleSheet("background-color: rgb(85, 255, 0);\n"
+                "border-radius : 15px;")
+                self.pushButton.setObjectName("pushButton")
+                self.pushButton_2 = QtWidgets.QPushButton(self.splitter)
+                font = QtGui.QFont()
+                font.setPointSize(20)
+                self.pushButton_2.setFont(font)
+                self.pushButton_2.setStyleSheet("background-color: rgb(85, 255, 0);\n"
+                "border-radius : 15px;")
+                self.pushButton_2.setObjectName("pushButton_2")
+                MainWindow.setCentralWidget(self.centralwidget)
+                self.menubar = QtWidgets.QMenuBar(MainWindow)
+                self.menubar.setGeometry(QtCore.QRect(0, 0, 818, 26))
+                self.menubar.setObjectName("menubar")
+                MainWindow.setMenuBar(self.menubar)
+                self.statusbar = QtWidgets.QStatusBar(MainWindow)
+                self.statusbar.setObjectName("statusbar")
+                MainWindow.setStatusBar(self.statusbar)
 
-        self.retranslateUi(MainWindow)
-        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+                self.retranslateUi(MainWindow)
+                self.pushButton.clicked.connect(self.loadImage)
+                self.pushButton_2.clicked.connect(self.savePhoto)
+                QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-    def retranslateUi(self, MainWindow):
-        _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+                # Added code here
+                self.filename = 'Snapshot '+str(time.strftime("%Y-%b-%d at %H.%M.%S %p"))+'.png' # Will hold the image address location
+                self.tmp = None # Will hold the temporary image for display
+                self.brightness_value_now = 0 # Updated brightness value
+                self.blur_value_now = 0 # Updated blur value
+                self.fps=0
+
+        def loadImage(self):
+                """ This function will load the camera device, obtain the image
+                        and set it to label using the setPhoto function
+                """
+                cam = True # True for webcam
+                if cam:
+                        vid = cv2.VideoCapture(0)
+                else:
+                        vid = cv2.VideoCapture('video.mp4') # place path to your video file here
+                cnt=0
+                frames_to_count=20
+                st = 0
+                fps=0
+                
+                while(vid.isOpened()):
+                        QtWidgets.QApplication.processEvents()	
+                        img, self.image = vid.read()
+                        self.image  = imutils.resize(self.image ,height = 480 )
+                        
+                        gray = cv2.cvtColor(self.image, cv2.COLOR_BGR2GRAY) 
+                        faces = faceCascade.detectMultiScale(
+                        gray,
+                        scaleFactor=1.15,  
+                        minNeighbors=7, 
+                        minSize=(80, 80), 
+                        flags=cv2.CASCADE_SCALE_IMAGE)
+                        
+                        for (x, y, w, h) in faces:
+                                cv2.rectangle(self.image, (x, y), (x + w, y + h), (10, 228,220), 5) 
+                        
+                        if cnt == frames_to_count:
+                                try: # To avoid divide by 0 we put it in try except
+                                        print(frames_to_count/(time.time()-st),'FPS') 
+                                        self.fps = round(frames_to_count/(time.time()-st)) 
+                                        
+                                        
+                                        st = time.time()
+                                        cnt=0
+                                except:
+                                        pass
+                        
+                        cnt+=1
+                        
+                        self.update()
+                        key = cv2.waitKey(1) & 0xFF
+                        if key == ord("q"):
+                                break
+        
+        def setPhoto(self,image):
+                """ This function will take image input and resize it 
+                        only for display purpose and convert it to QImage
+                        to set at the label.
+                """
+                self.tmp = image
+                image = imutils.resize(image,width=640)
+                frame = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+                image = QImage(frame, frame.shape[1],frame.shape[0],frame.strides[0],QImage.Format_RGB888)
+                self.label_2.setPixmap(QtGui.QPixmap.fromImage(image))
+	
+        def brightness_value(self,value):
+                """ This function will take value from the slider
+                        for the brightness from 0 to 99
+                """
+                self.brightness_value_now = value
+                print('Brightness: ',value)
+                self.update()
+		
+		
+        def blur_value(self,value):
+                """ This function will take value from the slider 
+                        for the blur from 0 to 99 """
+                self.blur_value_now = value
+                print('Blur: ',value)
+                self.update()
+	
+	
+        def changeBrightness(self,img,value):
+                """ This function will take an image (img) and the brightness
+                        value. It will perform the brightness change using OpenCv
+                        and after split, will merge the img and return it.
+                """
+                hsv = cv2.cvtColor(img,cv2.COLOR_BGR2HSV)
+                h,s,v = cv2.split(hsv)
+                lim = 255 - value
+                v[v>lim] = 255
+                v[v<=lim] += value
+                final_hsv = cv2.merge((h,s,v))
+                img = cv2.cvtColor(final_hsv,cv2.COLOR_HSV2BGR)
+                return img
+		
+        def changeBlur(self,img,value):
+                """ This function will take the img image and blur values as inputs.
+                        After perform blur operation using opencv function, it returns 
+                        the image img.
+                """
+                kernel_size = (value+1,value+1) # +1 is to avoid 0
+                img = cv2.blur(img,kernel_size)
+                return img
+	
+        def update(self):
+                """ This function will update the photo according to the 
+                        current values of blur and brightness and set it to photo label.
+                """
+                img = self.changeBrightness(self.image,self.brightness_value_now)
+                img = self.changeBlur(img,self.blur_value_now)
+
+                # Here we add display text to the image
+                text  =  'FPS: '+str(self.fps)
+                img = ps.putBText(img,text,text_offset_x=20,text_offset_y=30,vspace=20,hspace=10, font_scale=1.0,background_RGB=(10,20,222),text_RGB=(255,255,255))
+                text = str(time.strftime("%H:%M %p"))
+                img = ps.putBText(img,text,text_offset_x=self.image.shape[1]-180,text_offset_y=30,vspace=20,hspace=10, font_scale=1.0,background_RGB=(228,20,222),text_RGB=(255,255,255))
+                text  =  f"Brightness: {self.brightness_value_now}"
+                img = ps.putBText(img,text,text_offset_x=80,text_offset_y=425,vspace=20,hspace=10, font_scale=1.0,background_RGB=(20,210,4),text_RGB=(255,255,255))
+                text  =  f'Blur: {self.blur_value_now}: '
+                img = ps.putBText(img,text,text_offset_x=self.image.shape[1]-200,text_offset_y=425,vspace=20,hspace=10, font_scale=1.0,background_RGB=(210,20,4),text_RGB=(255,255,255))
+
+
+                self.setPhoto(img)
+	
+        def savePhoto(self):
+                """ This function will save the image"""
+                self.filename = 'Snapshot '+str(time.strftime("%Y-%b-%d at %H.%M.%S %p"))+'.png'
+                cv2.imwrite(self.filename,self.tmp)
+                print('Image saved as:',self.filename)
+
+        def retranslateUi(self, MainWindow):
+                _translate = QtCore.QCoreApplication.translate
+                MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+                self.label.setText(_translate("MainWindow", "GUI Aplication"))
+                self.pushButton.setText(_translate("MainWindow", "PushButton"))
+                self.pushButton_2.setText(_translate("MainWindow", "PushButton"))
 
 
 if __name__ == "__main__":

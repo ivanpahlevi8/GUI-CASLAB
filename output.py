@@ -102,7 +102,7 @@ class Ui_MainWindow(object):
                 """
                 cam = True # True for webcam
                 if cam:
-                        vid = cv2.VideoCapture(0)
+                        vid = cv2.VideoCapture(0, cv2.CAP_DSHOW)
                 else:
                         vid = cv2.VideoCapture('video.mp4') # place path to your video file here
                 cnt=0

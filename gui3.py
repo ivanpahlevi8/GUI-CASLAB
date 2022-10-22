@@ -61,46 +61,77 @@ class Ui_SecondWindow(object):
                 self.pushButton_2.clicked.connect(self.cameraOnClickButton)
 
                 #Input New Name Segment
-                self.inputNewName = QtWidgets.QLineEdit(self.centralwidget)
-                self.inputNewName.setGeometry(QtCore.QRect(890, 230, 181, 41))
-                self.inputNewName.setStyleSheet("font: 24pt \"Arial\";\n"
+                self.pushButton_2.setObjectName("pushButton_2")
+                self.outputName = QtWidgets.QLineEdit(self.centralwidget)
+                self.outputName.setGeometry(QtCore.QRect(890, 330, 221, 41))
+                self.outputName.setStyleSheet("font: 24pt \"Arial\";\n"
                 "border: 2px solid black;\n"
                 "border-radius: 15px;")
-                self.inputNewName.setObjectName("inputNewName")
+                self.outputName.setObjectName("outputName")
 
                 #Input new NPM Segment
-                self.inputNewNpm = QtWidgets.QLineEdit(self.centralwidget)
-                self.inputNewNpm.setGeometry(QtCore.QRect(890, 300, 181, 41))
-                self.inputNewNpm.setStyleSheet("font: 24pt \"Arial\";\n"
+                self.outputNpm = QtWidgets.QLineEdit(self.centralwidget)
+                self.outputNpm.setGeometry(QtCore.QRect(890, 400, 221, 41))
+                self.outputNpm.setStyleSheet("font: 24pt \"Arial\";\n"
                 "border: 2px solid black;\n"
                 "border-radius: 15px;")
-                self.inputNewNpm.setObjectName("inputNewNpm")
+                self.outputNpm.setObjectName("outputNpm")
+
                 self.label_3 = QtWidgets.QLabel(self.centralwidget)
-                self.label_3.setGeometry(QtCore.QRect(740, 230, 131, 41))
+                self.label_3.setGeometry(QtCore.QRect(700, 330, 181, 41))
                 self.label_3.setStyleSheet("font: 20pt \"Arial\";\n"
                 "border: 2px solid black;\n"
                 "border-radius: 10px;")
                 self.label_3.setObjectName("label_3")
+
                 self.label_4 = QtWidgets.QLabel(self.centralwidget)
-                self.label_4.setGeometry(QtCore.QRect(750, 300, 111, 41))
+                self.label_4.setGeometry(QtCore.QRect(700, 400, 181, 41))
                 self.label_4.setStyleSheet("font: 20pt \"Arial\";\n"
                 "border: 2px solid black;\n"
                 "border-radius: 10px;")
                 self.label_4.setObjectName("label_4")
 
-                #Add new Student Button
-                self.addButton = QtWidgets.QPushButton(self.centralwidget)
-                self.addButton.setGeometry(QtCore.QRect(850, 380, 91, 31))
-                self.addButton.setStyleSheet("font: 18pt \"Arial\";\n"
-                "border: 2px solid black;\n"
-                "border-radius: 7px;\n"
-                "background-color: grey;")
-                self.addButton.setObjectName("addButton")
-
                 self.label_5 = QtWidgets.QLabel(self.centralwidget)
-                self.label_5.setGeometry(QtCore.QRect(810, 160, 171, 41))
+                self.label_5.setGeometry(QtCore.QRect(770, 260, 251, 41))
                 self.label_5.setStyleSheet("font: 24pt \"Arial\";")
                 self.label_5.setObjectName("label_5")
+
+                self.label_6 = QtWidgets.QLabel(self.centralwidget)
+                self.label_6.setGeometry(QtCore.QRect(700, 520, 181, 41))
+                self.label_6.setStyleSheet("font: 20pt \"Arial\";\n"
+                "border: 2px solid black;\n"
+                "border-radius: 10px;")
+                self.label_6.setObjectName("label_6")
+
+                self.outputAbsensi = QtWidgets.QLineEdit(self.centralwidget)
+                self.outputAbsensi.setGeometry(QtCore.QRect(890, 520, 221, 41))
+                self.outputAbsensi.setStyleSheet("font: 24pt \"Arial\";\n"
+                "border: 2px solid black;\n"
+                "border-radius: 15px;")
+                self.outputAbsensi.setObjectName("outputAbsensi")
+
+                self.label_7 = QtWidgets.QLabel(self.centralwidget)
+                self.label_7.setGeometry(QtCore.QRect(700, 460, 181, 41))
+                self.label_7.setStyleSheet("font: 20pt \"Arial\";\n"
+                "border: 2px solid black;\n"
+                "border-radius: 10px;")
+                self.label_7.setObjectName("label_7")
+
+                self.outputTime = QtWidgets.QLineEdit(self.centralwidget)
+                self.outputTime.setGeometry(QtCore.QRect(890, 460, 221, 41))
+                self.outputTime.setStyleSheet("font: 24pt \"Arial\";\n"
+                "border: 2px solid black;\n"
+                "border-radius: 15px;")
+                self.outputTime.setObjectName("outputTime")
+
+                self.imageLabel = QtWidgets.QLabel(self.centralwidget)
+                self.imageLabel.setGeometry(QtCore.QRect(770, 35, 55, 16))
+                self.imageLabel.setText("")
+                self.imageLabel.setObjectName("imageLabel")
+                pixmap = QPixmap('avatar/ftui.png')
+                self.imageLabel.setPixmap(pixmap)
+                self.imageLabel.resize(pixmap.width(), pixmap.height())
+
                 MainWindow.setCentralWidget(self.centralwidget)
                 self.menubar = QtWidgets.QMenuBar(MainWindow)
                 self.menubar.setGeometry(QtCore.QRect(0, 0, 1127, 26))
@@ -133,8 +164,9 @@ class Ui_SecondWindow(object):
                 self.pushButton_2.setText(_translate("MainWindow", "On Camera"))
                 self.label_3.setText(_translate("MainWindow", "NAMA :"))
                 self.label_4.setText(_translate("MainWindow", "NPM :"))
-                self.addButton.setText(_translate("MainWindow", "Add"))
-                self.label_5.setText(_translate("MainWindow", "Add Data"))
+                self.label_5.setText(_translate("MainWindow", "MAHASISWA"))
+                self.label_6.setText(_translate("MainWindow", "ABSENSI :"))
+                self.label_7.setText(_translate("MainWindow", "TIME :"))
 
         def retake(self):
                 #buat camera

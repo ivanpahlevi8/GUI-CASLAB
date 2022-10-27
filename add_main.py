@@ -125,6 +125,7 @@ class Ui_MainWindow_Add(object):
                 self.flags = 0
                 self.cameraRun = True
                 self.absenWindow = NULL
+                self.studentsOnAddWindow = NULL
                 
 
         def retranslateUi(self, MainWindow):
@@ -176,5 +177,7 @@ class Ui_MainWindow_Add(object):
                 wajahDir = 'fotowajah'
                 img_name = self.inputName.text() + "_" + self.inputNpm.text() + ".png"
                 cv2.imwrite(wajahDir + '/' +img_name, self.image)
+                self.studentsOnAddWindow.append(self.inputName.text().lower() + "_" + self.inputNpm.text().lower())
+                print(self.studentsOnAddWindow)
 
 

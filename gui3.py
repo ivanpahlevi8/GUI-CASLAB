@@ -161,7 +161,7 @@ class Ui_SecondWindow(object):
                 for cl in self.myList:
                         curImg = cv2.imread(f'{self.path}/{cl}')
                         self.images.append(curImg)
-                        self.classNames.append(os.path.splitext(cl)[0])
+                        self.classNames.append(os.path.splitext(cl)[0].lower())
                 
                 self.cameraOn = False
                 self.flag = False
@@ -197,7 +197,7 @@ class Ui_SecondWindow(object):
                 for cl in self.myList:
                         curImg = cv2.imread(f'{self.path}/{cl}')
                         self.images.append(curImg)
-                        self.classNames.append(os.path.splitext(cl)[0])
+                        self.classNames.append(os.path.splitext(cl)[0].lower())
         
         def setPhoto(self, image):
                 image = imutils.resize(image,width=640)
@@ -253,7 +253,9 @@ class Ui_SecondWindow(object):
 
                                 if matches[matchIndex]:
                                         name = self.classNames[matchIndex].upper()
-                        # print(name)
+                                        print("The Name is : ", name.lower())
+                                        print("This Is self.students : ", self.students)
+                                        print("This Is Self.class : ", self.classNames)
                                         y1, x2, y2, x1 = faceLoc
                                         y1, x2, y2, x1 = y1 * 4, x2 * 4, y2 * 4, x1 * 4
                                         cv2.rectangle(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
@@ -268,13 +270,14 @@ class Ui_SecondWindow(object):
                                                 time = now.strftime("%H:%M:%S")
                                                 self.outputTime.setText(time)
                                                 self.flag = True
-                                        if name in self.classNames:
-                                                if name in self.student: # Ketika nama tidak ada di array student maka tidak bisa absen lagi
-                                                        self.student.remove(name)
+                                        if name.lower() in self.classNames:
+                                                if name.lower() in self.students: # Ketika nama tidak ada di array student maka tidak bisa absen lagi
+                                                        self.students.remove(name.lower())
                                                         name, npm = name.split("_") # dapetin string nama dan NPM mahasiswa
                                                         now = datetime.now()
                                                         dtString = now.strftime('%H:%M:%S')
                                                         self.f.writelines(f'\n{name},{npm},{dtString}')
+                                                        print(self.students)
                                 else:
                                         y1, x2, y2, x1 = faceLoc
                                         y1, x2, y2, x1 = y1 * 4, x2 * 4, y2 * 4, x1 * 4
@@ -294,7 +297,8 @@ class Ui_SecondWindow(object):
                                         if(i >= 10) :
                                                 self.cameraOffClickButton()
                                                 self.showDialogDaftar()
-                                                self.myDialog1.windowMain = self.windowMain                
+                                                self.myDialog1.windowMain = self.windowMain
+                                                self.myDialog1.studentsOnAddDialog = self.students                
                                         #retake()
                                 #markAttendance(name)
 

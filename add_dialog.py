@@ -32,6 +32,7 @@ class Ui_Dialog_Daftar(object):
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
         self.windowMain = NULL
+        self.studentsOnAddDialog = NULL
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
@@ -49,6 +50,7 @@ class Ui_Dialog_Daftar(object):
         self.main = Ui_MainWindow_Add()
         self.MainWin = QtWidgets.QMainWindow()
         self.main.setupUi(self.MainWin)
+        self.main.studentsOnAddWindow = self.studentsOnAddDialog
         self.myDialog.close()
         self.windowMain.hide()
         self.main.absenWindow = self.windowMain

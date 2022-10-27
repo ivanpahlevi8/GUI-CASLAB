@@ -16,10 +16,13 @@ import numpy as np
 import os
 import face_recognition
 from datetime import datetime
+from add_dialog import Ui_Dialog_Daftar
+from datetime import datetime
 
 
 class Ui_SecondWindow(object):
         def setupUi(self, MainWindow):
+                self.windowMain = MainWindow
                 MainWindow.setObjectName("MainWindow")
                 MainWindow.resize(1127, 707)
                 self.centralwidget = QtWidgets.QWidget(MainWindow)
@@ -59,9 +62,15 @@ class Ui_SecondWindow(object):
                 "background-color: grey;")
                 self.pushButton_2.setObjectName("pushButton_2")
                 self.pushButton_2.clicked.connect(self.cameraOnClickButton)
+                self.pushButton_2.setObjectName("pushButton_2")
+
+                #Reset Button
+                self.resetButton = QtWidgets.QPushButton(self.centralwidget)
+                self.resetButton.setGeometry(QtCore.QRect(840, 610, 93, 28))
+                self.resetButton.setObjectName("resetButton")
+                self.resetButton.clicked.connect(self.resetButtonOnClickListener)
 
                 #Input New Name Segment
-                self.pushButton_2.setObjectName("pushButton_2")
                 self.outputName = QtWidgets.QLineEdit(self.centralwidget)
                 self.outputName.setGeometry(QtCore.QRect(890, 330, 221, 41))
                 self.outputName.setStyleSheet("font: 24pt \"Arial\";\n"
@@ -155,6 +164,9 @@ class Ui_SecondWindow(object):
                         self.classNames.append(os.path.splitext(cl)[0])
                 
                 self.cameraOn = False
+                self.flag = False
+                self.students = self.classNames.copy()
+                self.f = open("coba.csv",'r+')
 
         def retranslateUi(self, MainWindow):
                 _translate = QtCore.QCoreApplication.translate
@@ -167,37 +179,7 @@ class Ui_SecondWindow(object):
                 self.label_5.setText(_translate("MainWindow", "MAHASISWA"))
                 self.label_6.setText(_translate("MainWindow", "ABSENSI :"))
                 self.label_7.setText(_translate("MainWindow", "TIME :"))
-
-        def retake(self):
-                #buat camera
-                cam = cv2.VideoCapture(0)
-                counter = 0
-                wajahDir = 'fotowajah'
-                while True:
-                        ret, frame = cam.read()
-                        self.image = frame 
-                        cv2.imshow("test",frame)
-                        k=cv2.waitKey(1)
-                        if k%256 == 27:
-                                print("esc kluar")
-                                break
-                        elif k%256==32 :
-                                #buat screnshoot sama masukin ke folder
-                                name=input("Masukkan nama : ")
-                                print(name)
-                                NPM=input("Masukkan NPM : ")
-                                print(NPM)
-                                img_name = name + "_" + NPM + ".png"
-                                cv2.imwrite(wajahDir + '/' +img_name, frame)
-                                #buat input ke csv (gagal)
-                                # csv1 = open("coba.csv", 'w', newline='')
-                                # tulis = csv.writer(csv1)
-                                #tup1= {name, NPM}
-                                #tulis.writerow('\n'+tup1)
-                                break
-
-                cam.release()
-                cam.destroyAllWindows
+                self.resetButton.setText(_translate("MainWindow", "Reset Absen"))
         
         def cameraOnClickButton(self):
                 self.cameraOn = True
@@ -207,6 +189,15 @@ class Ui_SecondWindow(object):
                 self.cameraOn = False
                 self.pixmap = QPixmap('avatar/Griffins.png')
                 self.label.setPixmap(self.pixmap)
+                self.path = 'fotowajah'
+                self.images = []
+                self.classNames = []
+                self.myList = os.listdir(self.path)
+
+                for cl in self.myList:
+                        curImg = cv2.imread(f'{self.path}/{cl}')
+                        self.images.append(curImg)
+                        self.classNames.append(os.path.splitext(cl)[0])
         
         def setPhoto(self, image):
                 image = imutils.resize(image,width=640)
@@ -222,12 +213,28 @@ class Ui_SecondWindow(object):
                         encode = face_recognition.face_encodings(img)[0]
                         encodeList.append(encode)
                 return encodeList
+        
+        def showDialogDaftar(self):
+                self.dialogWindow = QtWidgets.QDialog()
+                self.myDialog1 = Ui_Dialog_Daftar()
+                self.myDialog1.setupUi(self.dialogWindow)
+                self.dialogWindow.show()
+
+        def resetButtonOnClickListener(self):
+                self.cameraOffClickButton()
+                self.outputName.setText("")
+                self.outputNpm.setText("")
+                self.outputAbsensi.setText("")
+                self.outputTime.setText("")
+                self.flag = False
 
         def recognition(self):
                 encodeListKnown = self.findEncodings(self.images)
                 print('Encoding Complete')
 
                 cam = cv2.VideoCapture(0)
+
+                i = 0
 
                 while True and self.cameraOn:
                         frame, img = cam.read()
@@ -252,6 +259,22 @@ class Ui_SecondWindow(object):
                                         cv2.rectangle(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
                                         cv2.rectangle(img, (x1, y2 - 35), (x2, y2), (0, 255, 0), cv2.FILLED)
                                         cv2.putText(img, name, (x1 + 6, y2 - 6), cv2.FONT_HERSHEY_COMPLEX, 0.5, (255, 255, 255), 2)
+                                        arrayData = name.split('_')
+                                        self.outputName.setText(arrayData[0])
+                                        self.outputNpm.setText(arrayData[1])
+                                        self.outputAbsensi.setText("Absen Hadir")
+                                        if(not self.flag):
+                                                now = datetime.now()
+                                                time = now.strftime("%H:%M:%S")
+                                                self.outputTime.setText(time)
+                                                self.flag = True
+                                        if name in self.classNames:
+                                                if name in self.student: # Ketika nama tidak ada di array student maka tidak bisa absen lagi
+                                                        self.student.remove(name)
+                                                        name, npm = name.split("_") # dapetin string nama dan NPM mahasiswa
+                                                        now = datetime.now()
+                                                        dtString = now.strftime('%H:%M:%S')
+                                                        self.f.writelines(f'\n{name},{npm},{dtString}')
                                 else:
                                         y1, x2, y2, x1 = faceLoc
                                         y1, x2, y2, x1 = y1 * 4, x2 * 4, y2 * 4, x1 * 4
@@ -260,15 +283,23 @@ class Ui_SecondWindow(object):
 
                                         facesCurFrame = face_recognition.face_locations(imgS)
                                         encodesCurFrame = face_recognition.face_encodings(imgS, facesCurFrame)                
-                                        cv2.rectangle(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
-                                        cv2.rectangle(img, (x1, y2 - 35), (x2, y2), (0, 255, 0), cv2.FILLED)
+                                        cv2.rectangle(img, (x1, y1), (x2, y2), (0, 0, 255), 2)
+                                        cv2.rectangle(img, (x1, y2 - 35), (x2, y2), (0, 0, 255), cv2.FILLED)
                                         cv2.putText(img, "Unrecognize", (x1 + 6, y2 - 6), cv2.FONT_HERSHEY_COMPLEX, 0.5, (255, 255, 255), 2)
-                                        # Tambah Window Dialog Di Bawah                
+                                        # Tambah Window Dialog Di Bawah
+                                        self.outputName.setText("Unknown")
+                                        self.outputNpm.setText("Unknown")
+                                        self.outputAbsensi.setText("Unknown")
+                                        self.outputTime.setText("Unknown")
+                                        if(i >= 10) :
+                                                self.cameraOffClickButton()
+                                                self.showDialogDaftar()
+                                                self.myDialog1.windowMain = self.windowMain                
                                         #retake()
                                 #markAttendance(name)
 
                         self.setPhoto(img)
-                        #cv2.imshow('Webcam', img)
+                        i = i + 1
                         k=cv2.waitKey(1)
                         if k%256 == 27:
                                 print("esc kluar")

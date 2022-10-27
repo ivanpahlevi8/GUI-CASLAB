@@ -7,35 +7,32 @@
     <x>0</x>
     <y>0</y>
     <width>1127</width>
-    <height>707</height>
+    <height>704</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QLabel" name="label">
+   <widget class="QLineEdit" name="inputName">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>80</y>
-      <width>621</width>
-      <height>481</height>
+      <x>890</x>
+      <y>170</y>
+      <width>221</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">border: 2px solid black;
-border-radius: 10px;
-</string>
-    </property>
-    <property name="text">
-     <string/>
+     <string notr="true">font: 24pt &quot;Arial&quot;;
+border: 2px solid black;
+border-radius: 15px;</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>280</x>
+      <x>270</x>
       <y>30</y>
       <width>121</width>
       <height>41</height>
@@ -50,79 +47,11 @@ border-radius: 15px;</string>
      <string>VIEW</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
-    <property name="geometry">
-     <rect>
-      <x>350</x>
-      <y>580</y>
-      <width>161</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">font: 18pt &quot;Arial&quot;;
-border: 2px solid black;
-border-radius: 7px;
-background-color: grey;</string>
-    </property>
-    <property name="text">
-     <string>Off Camera</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton_2">
-    <property name="geometry">
-     <rect>
-      <x>140</x>
-      <y>580</y>
-      <width>161</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">font: 18pt &quot;Arial&quot;;
-border: 2px solid black;
-border-radius: 7px;
-background-color: grey;</string>
-    </property>
-    <property name="text">
-     <string>On Camera</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="outputName">
-    <property name="geometry">
-     <rect>
-      <x>890</x>
-      <y>330</y>
-      <width>221</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">font: 24pt &quot;Arial&quot;;
-border: 2px solid black;
-border-radius: 15px;</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="outputNpm">
-    <property name="geometry">
-     <rect>
-      <x>890</x>
-      <y>400</y>
-      <width>221</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">font: 24pt &quot;Arial&quot;;
-border: 2px solid black;
-border-radius: 15px;</string>
-    </property>
-   </widget>
    <widget class="QLabel" name="label_3">
     <property name="geometry">
      <rect>
       <x>700</x>
-      <y>330</y>
+      <y>170</y>
       <width>181</width>
       <height>41</height>
      </rect>
@@ -136,11 +65,79 @@ border-radius: 10px;</string>
      <string>NAMA :</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="takePhotoButton">
+    <property name="geometry">
+     <rect>
+      <x>250</x>
+      <y>590</y>
+      <width>161</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 18pt &quot;Arial&quot;;
+border: 2px solid black;
+border-radius: 7px;
+background-color: grey;</string>
+    </property>
+    <property name="text">
+     <string>Take Photo</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="cameraView">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>90</y>
+      <width>621</width>
+      <height>481</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border: 2px solid black;
+border-radius: 10px;
+</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="inputNpm">
+    <property name="geometry">
+     <rect>
+      <x>890</x>
+      <y>240</y>
+      <width>221</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 24pt &quot;Arial&quot;;
+border: 2px solid black;
+border-radius: 15px;</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_5">
+    <property name="geometry">
+     <rect>
+      <x>790</x>
+      <y>100</y>
+      <width>181</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 24pt &quot;Arial&quot;;</string>
+    </property>
+    <property name="text">
+     <string>ISI DATA</string>
+    </property>
+   </widget>
    <widget class="QLabel" name="label_4">
     <property name="geometry">
      <rect>
       <x>700</x>
-      <y>400</y>
+      <y>240</y>
       <width>181</width>
       <height>41</height>
      </rect>
@@ -154,27 +151,30 @@ border-radius: 10px;</string>
      <string>NPM :</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_5">
+   <widget class="QPushButton" name="pushButton_3">
     <property name="geometry">
      <rect>
-      <x>770</x>
-      <y>260</y>
-      <width>251</width>
+      <x>800</x>
+      <y>400</y>
+      <width>161</width>
       <height>41</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">font: 24pt &quot;Arial&quot;;</string>
+     <string notr="true">font: 18pt &quot;Arial&quot;;
+border: 2px solid black;
+border-radius: 7px;
+background-color: grey;</string>
     </property>
     <property name="text">
-     <string>MAHASISWA</string>
+     <string>SUBMIT</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_6">
     <property name="geometry">
      <rect>
       <x>700</x>
-      <y>520</y>
+      <y>310</y>
       <width>181</width>
       <height>41</height>
      </rect>
@@ -185,14 +185,14 @@ border: 2px solid black;
 border-radius: 10px;</string>
     </property>
     <property name="text">
-     <string>ABSENSI :</string>
+     <string>YEAR :</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="outputAbsensi">
+   <widget class="QLineEdit" name="inputYear">
     <property name="geometry">
      <rect>
       <x>890</x>
-      <y>520</y>
+      <y>310</y>
       <width>221</width>
       <height>41</height>
      </rect>
@@ -201,65 +201,6 @@ border-radius: 10px;</string>
      <string notr="true">font: 24pt &quot;Arial&quot;;
 border: 2px solid black;
 border-radius: 15px;</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_7">
-    <property name="geometry">
-     <rect>
-      <x>700</x>
-      <y>460</y>
-      <width>181</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">font: 20pt &quot;Arial&quot;;
-border: 2px solid black;
-border-radius: 10px;</string>
-    </property>
-    <property name="text">
-     <string>TIME :</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="outputTime">
-    <property name="geometry">
-     <rect>
-      <x>890</x>
-      <y>460</y>
-      <width>221</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">font: 24pt &quot;Arial&quot;;
-border: 2px solid black;
-border-radius: 15px;</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="imageLabel">
-    <property name="geometry">
-     <rect>
-      <x>870</x>
-      <y>110</y>
-      <width>55</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="resetButton">
-    <property name="geometry">
-     <rect>
-      <x>840</x>
-      <y>610</y>
-      <width>93</width>
-      <height>28</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Reset Absen</string>
     </property>
    </widget>
   </widget>

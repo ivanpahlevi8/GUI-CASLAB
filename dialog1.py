@@ -34,6 +34,8 @@ class Ui_Dialog1(object):
         self.Ok = False
         self.Window = NULL
         self.SecondWindow = NULL
+        self.absen = NULL
+        self.daftar = NULL
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
@@ -47,5 +49,7 @@ class Ui_Dialog1(object):
         self.Window.close()
         self.MainWin = QtWidgets.QMainWindow()
         self.SecondWindow.setupUi(self.MainWin)
+        self.SecondWindow.daftarLayout = self.daftar
+        self.SecondWindow.absenLayout = self.absen
         self.MainWin.show()
 

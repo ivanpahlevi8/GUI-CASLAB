@@ -9,9 +9,11 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from gui3 import Ui_SecondWindow as Main
 from dialog1 import Ui_Dialog1 as Dialog1
 from dialog2 import Ui_Dialog2 as Dialog2
+from rule_layout import Ui_MainWindow_Rule
+from gui3 import Ui_SecondWindow as abseWindow
+from add_main import Ui_MainWindow_Add as daftarWindow
 import sys
 
 
@@ -103,8 +105,12 @@ class Ui_MainWindow(object):
                 if self.usernameInput.text() == "ivanpahlevi8" and self.passwordInput.text() == "ivan":
                         self.showDialog()
                         self.myDialog1.Window = self.firstWindow
-                        self.w = Main()
+                        self.w = Ui_MainWindow_Rule()
+                        self.myAbsen = abseWindow()
+                        self.myDaftar = daftarWindow()
                         self.myDialog1.SecondWindow = self.w
+                        self.myDialog1.absen = self.myAbsen
+                        self.myDialog1.daftar = self.myDaftar
                 else :
                         self.showDialog2()
 

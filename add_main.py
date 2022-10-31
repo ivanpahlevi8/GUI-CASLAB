@@ -16,6 +16,7 @@ import os
 import face_recognition
 from PyQt5.QtGui import QImage
 from PyQt5.QtGui import QPixmap
+from warn_add_dialog import Ui_Dialog_Warn_Add
 from sucess_add_dialog import Ui_Dialog_Sucess_Add
 
 
@@ -34,6 +35,7 @@ class Ui_MainWindow_Add(object):
                 "border: 2px solid black;\n"
                 "border-radius: 15px;")
                 self.inputName.setObjectName("inputName")
+                self.inputName.setText("")
 
                 self.label_2 = QtWidgets.QLabel(self.centralwidget)
                 self.label_2.setGeometry(QtCore.QRect(270, 30, 121, 41))
@@ -75,6 +77,7 @@ class Ui_MainWindow_Add(object):
                 "border: 2px solid black;\n"
                 "border-radius: 15px;")
                 self.inputNpm.setObjectName("inputNpm")
+                self.inputNpm.setText("")
 
                 self.label_5 = QtWidgets.QLabel(self.centralwidget)
                 self.label_5.setGeometry(QtCore.QRect(790, 100, 181, 41))
@@ -145,12 +148,7 @@ class Ui_MainWindow_Add(object):
         def check(self):
                 self.cameraRun = False
                 self.takePhoto()
-                self.Dialog = QtWidgets.QDialog()
-                self.ui = Ui_Dialog_Sucess_Add()
-                self.ui.setupUi(self.Dialog)
-                self.ui.mainWindowBefore = self.myWindow
-                self.ui.daftarWindow = self.absenWindow
-                self.Dialog.show()
+                
 
         def retake(self):
                         #buat camera
@@ -174,10 +172,22 @@ class Ui_MainWindow_Add(object):
         
         def takePhoto(self):
                 #
-                wajahDir = 'fotowajah'
-                img_name = self.inputName.text() + "_" + self.inputNpm.text() + ".png"
-                cv2.imwrite(wajahDir + '/' +img_name, self.image)
-                self.studentsOnAddWindow.append(self.inputName.text().lower() + "_" + self.inputNpm.text().lower())
-                print(self.studentsOnAddWindow)
+                if(self.inputName.text() == "" and self.inputNpm.text() == ""):
+                        print("Handling")
+                        self.inputName.setText("Fill Name!!")
+                        self.inputNpm.setText("Fill NPM!!")
+                        self.inputYear.setText("Fill Year!!")
+                        self.cameraRun = True
+                else:
+                        wajahDir = 'fotowajah'
+                        img_name = self.inputName.text() + "_" + self.inputNpm.text() + ".png"
+                        cv2.imwrite(wajahDir + '/' +img_name, self.image)
+                        self.studentsOnAddWindow.append(self.inputName.text().lower() + "_" + self.inputNpm.text().lower())
+                        self.Dialog = QtWidgets.QDialog()
+                        self.ui = Ui_Dialog_Sucess_Add()
+                        self.ui.setupUi(self.Dialog)
+                        self.ui.mainWindowBefore = self.myWindow
+                        self.ui.daftarWindow = self.absenWindow
+                        self.Dialog.show()
 
 

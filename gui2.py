@@ -102,7 +102,7 @@ class Ui_MainWindow(object):
                 self.passwordLabel.setText(_translate("MainWindow", "Password :"))
 
         def opeWindow(self):
-                if self.usernameInput.text() == "ivanpahlevi8" and self.passwordInput.text() == "ivan":
+                if self.usernameInput.text() == "kelompok4" and self.passwordInput.text() == "loginadmin":
                         self.showDialog()
                         self.myDialog1.Window = self.firstWindow
                         self.w = Ui_MainWindow_Rule()

@@ -253,9 +253,6 @@ class Ui_SecondWindow(object):
 
                                 if matches[matchIndex]:
                                         name = self.classNames[matchIndex].upper()
-                                        print("The Name is : ", name.lower())
-                                        print("This Is self.students : ", self.students)
-                                        print("This Is Self.class : ", self.classNames)
                                         y1, x2, y2, x1 = faceLoc
                                         y1, x2, y2, x1 = y1 * 4, x2 * 4, y2 * 4, x1 * 4
                                         cv2.rectangle(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
